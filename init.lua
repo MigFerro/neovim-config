@@ -665,9 +665,28 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         pyright = {},
-        ts_ls = {},
-        prettier = {},
+
         emmet_language_server = {},
+        ts_ls = {
+          filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+          init_options = {
+            preferences = {
+              importModuleSpecifier = 'non-relative',
+            },
+          },
+        },
+        eslint = {
+          filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+        },
+        -- Add Prettier for formatting
+        prettier = {
+          filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'scss' },
+        },
+        -- For React-specific LSP features
+        tailwindcss = {
+          filetypes = { 'react', 'javascriptreact', 'typescriptreact' },
+        },
+
         -- gopls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -751,7 +770,8 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        -- local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = {}
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = 'never'
@@ -769,7 +789,13 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascript = { 'prettier' },
+        javascriptreact = { 'prettier' },
+        typescript = { 'prettier' },
+        typescriptreact = { 'prettier' },
+        css = { 'prettier' },
+        scss = { 'prettier' },
+        json = { 'prettier' },
       },
     },
   },
@@ -887,6 +913,14 @@ require('lazy').setup({
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'nvim_lsp_signature_help' },
+          {
+            name = 'buffer',
+            option = {
+              get_bufnrs = function()
+                return vim.api.nvim_list_bufs()
+              end,
+            },
+          },
         },
       }
     end,
