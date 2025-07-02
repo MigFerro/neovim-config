@@ -558,6 +558,14 @@ require('lazy').setup({
           filetypes = { 'react', 'javascriptreact', 'typescriptreact' },
         },
 
+        tinymist = {
+          settings = {
+            formatterMode = 'typstyle',
+            exportPdf = 'onSave',
+            semanticTokens = 'disable',
+          },
+        },
+
         -- gopls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -925,6 +933,9 @@ require('lazy').setup({
     },
   },
 })
+
+-- Spellcheck
+vim.keymap.set('n', '<leader>ts', '<cmd>setlocal spell spelllang=en_us<cr>', { desc = '[T]oggle [S]pellcheck (en-us)' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
